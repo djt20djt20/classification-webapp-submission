@@ -12,17 +12,34 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import inspect
-import textwrap
-
 import streamlit as st
+from streamlit.logger import get_logger
+
+LOGGER = get_logger(__name__)
 
 
-def show_code(demo):
-    """Showing the code of the demo."""
-    show_code = st.sidebar.checkbox("Show code", True)
-    if show_code:
-        # Showing the code of the demo.
-        st.markdown("## Code")
-        sourcelines, _ = inspect.getsourcelines(demo)
-        st.code(textwrap.dedent("".join(sourcelines[1:])))
+def run():
+    st.set_page_config(
+        page_title="Hello",
+        page_icon="👋",
+    )
+
+    st.write("# Welcome to my Text-Classification Webapp 👋")
+
+    st.sidebar.success("Select a demo above.")
+
+    st.markdown(
+        """
+        This is my text-classification webapp. 
+        **👈 Click here to open some pages**
+        ### What can you do?
+        - Classify your own query with the web interface
+        - Classify a pdf document
+        - Enter a url and to classify a website
+        
+    """
+    )
+
+
+if __name__ == "__main__":
+    run()
