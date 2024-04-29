@@ -18,9 +18,9 @@ def create_markdown_prompt(query, df_classes, multilabel):
     prompt = f"## Query\nHere is a user-generated query: **{query}**\n\n"
     prompt += "\n\nYou are going to classify this query."
     prompt += "\n\nYou are going to classify this query based on the context it pertains to (e.g., music, food etc.)."
-    prompt += "\n\nConsider the primary action or goal of the query. The user is seeking information on how to perform a task or make something."
+    prompt += "\n\nConsider the primary action or goal of the query. The user is seeking information on how to perform a task or make something. Classify based on this primary goal."
+    prompt += "\n\nDo not classify based on purely on association. For example, a query that mentions the place Cheddar in a question about taxes shouldn't be classified as Cheese."
     prompt += "\n\nBelow are the possible classes."
-    prompt += "\n\nTry to understand the context of the classification from the possible classes. This will help you to classify them better."
     prompt += "\n\n## Classes and Descriptions\n"
     for index, row in df_classes.iterrows():
         prompt += f"- **Class ID: {row['class_id']}** Class Name:({row['class_name']}): {row['class_description']}\n"
