@@ -25,7 +25,7 @@ def create_markdown_prompt(query, df_classes, multilabel):
     for index, row in df_classes.iterrows():
         prompt += f"- **Class ID: {row['class_id']}** Class Name:({row['class_name']}): {row['class_description']}\n"
     prompt += "\n## Instructions\nIdentify the main intent of the user's query. Consider the nuances in phrasing that might indicate the user's real intent."
-    prompt += "\n\nConsider the negation in user statements carefully. A statement like 'do not send me chocolate' should be classified as a negative response even though it contains affirmative words such as 'do' and 'send'."
+    prompt += "\n\nConsider the negation in user statements carefully. Class statements like 'do not send me chocolate' as negative."
     #prompt += "\n\nConsider the primary action or goal of the query. The user is seeking information on how to perform a task or make something. Classify based on this primary goal."
     if multilabel:
         prompt += "\n## Notes\nYou can choose multiple class IDs."
@@ -73,7 +73,7 @@ def create_reason_prompt(query, df_classes, multilabel, classification):
 
     return prompt
 
-def query_openai(prompt, temperature = 0, model_name =  "gpt-3.5-turbo"): 
+def query_openai(prompt, temperature = 0.00000001, model_name =  "gpt-3.5-turbo"): 
     """
     Queries the OpenAI API with a specified prompt and returns the response.
     
