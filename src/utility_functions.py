@@ -19,7 +19,8 @@ def create_markdown_prompt(query, df_classes, multilabel):
     prompt += "\n\nYou are going to classify this query."
     prompt += "\n\nYou are going to classify this query based on the context it pertains to (e.g., music, food etc.)."
     prompt += "\n\nConsider the primary action or goal of the query. The user is seeking information on how to perform a task or make something. Classify based on this primary goal."
-    prompt += "\n\nDo not classify based on purely on association. For example, a query that mentions the place Cheddar in a question about taxes shouldn't be classified as Cheese."
+    #prompt += "\n\nConsider carefully the primary goal of the classification."
+    #prompt += "\n\nDo not classify based on purely on casual associations. For example, a query that mentions the place Cheddar in a question about taxes shouldn't be classified as Cheese."
     prompt += "\n\nBelow are the possible classes."
     prompt += "\n\n## Classes and Descriptions\n"
     for index, row in df_classes.iterrows():
@@ -82,19 +83,31 @@ def query_openai(prompt, temperature = 0, model_name =  "gpt-3.5-turbo"):
     Returns:
         dict: The API response containing the classification results or error message.
     """
-    client = OpenAI(api_key = st.secrets['open_ai_key'])
+    client = OpenAI(api_key=st.secrets['open_ai_key'])
     try:
         response = client.chat.completions.create(
             model=model_name,
-            messages=[
-                {"role": "system", "content": prompt},
-            ],
+            messages=[{"role": "system", "content": prompt}],
             temperature=temperature,
-            #response_format = { "type": "json_object" }
-            )
+        )
+        if 'choices' not in response or not response['choices']:
+            raise ValueError("Invalid response from API: No choices available")
         return response
     except Exception as e:
-        return f"An error occurred: {e}"
+        return {"error": f"An error occurred when querying the API: {str(e)}"}
+
+
+def validate_input(payload):
+    required_keys = {'query', 'options', 'classes'}
+    if not required_keys.issubset(payload.keys()):
+        raise ValueError("Missing required keys in the input payload")
+
+    if 'multilabel' not in payload['options']:
+        raise ValueError("Missing 'multilabel' in options")
+
+    if not isinstance(payload['classes'], list) or not all('class_id' in cls and 'class_name' in cls for cls in payload['classes']):
+        raise ValueError("Classes must be a list of dicts with 'class_id' and 'class_name'")
+
 
 def process_request(payload, temperature = 0, model_name =  "gpt-3.5-turbo"):
     """
@@ -107,6 +120,7 @@ def process_request(payload, temperature = 0, model_name =  "gpt-3.5-turbo"):
         dict: A dictionary containing the classification results and any reasoning or errors.
     """
     try:
+        validate_input(payload) 
         payload = json.loads(payload)
         if 'show_reasoning' not in payload['options'].keys():
             reasoning = True
