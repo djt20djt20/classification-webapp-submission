@@ -24,3 +24,4 @@ In order to test the model, please follow the following steps:
 2. I chose to not allow any codes in that are in an incorrect format. It might be possible to programatically extract the classification code, but I thought this would introduce risks as I'd have to think through a lot of edge cases.
 3. I chose not to adjust the prompt for the webscrap and pdf classifier, this is largely due to lack of time, and also because I don't know what I'm tuning it to do.
 4. The prompt was engineered in the utility_functions.py file, and has been formatted for easy experimentation (comment out or add lines where you need them). Some of the biggest gains in performance was made when I instructed the ai to consider the main intention of the query. 
+5. The queries are written in markdown to make them easy for a human to read.

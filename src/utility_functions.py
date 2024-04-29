@@ -90,8 +90,6 @@ def query_openai(prompt, temperature = 0, model_name =  "gpt-3.5-turbo"):
             messages=[{"role": "system", "content": prompt}],
             temperature=temperature,
         )
-        if 'choices' not in response or not response['choices']:
-            raise ValueError("Invalid response from API: No choices available")
         return response
     except Exception as e:
         return {"error": f"An error occurred when querying the API: {str(e)}"}
@@ -120,8 +118,8 @@ def process_request(payload, temperature = 0, model_name =  "gpt-3.5-turbo"):
         dict: A dictionary containing the classification results and any reasoning or errors.
     """
     try:
-        validate_input(payload) 
         payload = json.loads(payload)
+        validate_input(payload) 
         if 'show_reasoning' not in payload['options'].keys():
             reasoning = True
         else:
