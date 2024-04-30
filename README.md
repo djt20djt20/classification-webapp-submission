@@ -30,3 +30,4 @@ In order to test the model, please follow the following steps:
 
 # Reflection
 - If I did this task again, I would have deployed the API somewhere and sent you the link, and would have focussed more on the API rather than the front end, because, with hindsight, I think this is more of what you wanted in the task
+- I would also have had seperate repos for the API and the streamlit app, and have the streamlit app call the API, rather than have them bound together like they are now.
