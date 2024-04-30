@@ -15,7 +15,7 @@ class ClassificationRequest(BaseModel):
 async def classify_text(request: ClassificationRequest):
     try:
         logging.info("Received request for classification")
-        request_data = json.dumps(request.dict())
+        request_data = json.dumps(request.model_dump())
         
         logging.info(f"Request data prepared for processing: {request_data}")
         result = utility_functions.process_request(request_data)

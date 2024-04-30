@@ -26,7 +26,7 @@ def create_markdown_prompt(query, df_classes, multilabel):
         prompt += f"- **Class ID: {row['class_id']}** Class Name:({row['class_name']}): {row['class_description']}\n"
     prompt += "\n## Instructions\nIdentify the main intent of the user's query. Consider the nuances in phrasing that might indicate the user's real intent."
     prompt += "\n\nConsider the negation in user statements carefully. Class statements like 'do not send me chocolate' as negative."
-    #prompt += "\n\nConsider the primary action or goal of the query. The user is seeking information on how to perform a task or make something. Classify based on this primary goal."
+    prompt += "\n\nConsider the primary action or goal of the query. The user is seeking information on how to perform a task or make something. Classify based on this primary goal."
     if multilabel:
         prompt += "\n## Notes\nYou can choose multiple class IDs."
         prompt += "\n\nOutput the ClassID codes separated by comma (for example T1, CC1)."
